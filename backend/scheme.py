@@ -13,9 +13,10 @@ class Habit(BaseModel):
     UserId: str
     Name: str
     DateOfBegin: datetime
+    DateForEnd: int 
     Completed: bool
 
 
-class Activity (BaseModel):
+class Activity(BaseModel):
     HabitId: str
     DateOfActivity: datetime    
