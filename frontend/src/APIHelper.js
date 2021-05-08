@@ -21,7 +21,7 @@ export async function createHabbit(UserId, Name, DateForEnd) {
 }
 
 export async function getAllHabit(UserId) {
-    const { data: answer } = await axios.get( process.env.API_URL + 'habit?UserId=' + `${UserId}`,)
+    const { data: answer } = await axios.get( API_URL + 'habit?UserId=' + `${UserId}`,)
     return answer
 }
 

@@ -48,9 +48,9 @@ function App() {
     const [isPopupActive, setPopupActive] = useState(false);
       
     //Хуки данных пользователя
-    const [userId, setUserId] = useState("test_userId");
-    const [sberId, setSberId] = useState(123);
-    const [userName, setUserName] = useState("Кирилл");
+    const [userId, setUserId] = useState("1231232131");
+    const [sberId, setSberId] = useState(0);
+    const [userName, setUserName] = useState("Кирилл1");
     const [userAge, setUserAge] = useState(20);
     const [userGender, setUserGender] = useState("М");
 
@@ -87,6 +87,7 @@ function App() {
 
     //
     useEffect(()=>{
+      //Инициализация ассистента
       assistant.current=initializeAssistant(() => getStateForAssistant());
       assistant.current.on("start", (event) => {
         console.log(`assistant.on(start)`, event);
@@ -114,7 +115,8 @@ function App() {
           dispatchAssistantAction(action);
         }
       );
-
+      //Получение текущих привычек
+       getAllHabit(userId).then((x)=>{console.log(x)});
     },[]);
     
     const dispatchAssistantAction = async (action) => {
@@ -130,10 +132,6 @@ function App() {
       }
     };
     
-    
-    //Заполнение полей с привычкам
-    setHabits( getAllHabit(userId) );
-    console.log(habits);
 
 
     //Обратотчики рользовательской активности
@@ -153,7 +151,7 @@ function App() {
             
               <HabitHeader >
                 <TextBox size="l" title={`Здравствуйте, ${userName}.`}/>
-                <HabitCreationButton onClick={()=> setPopupActive(!isPopupActive)}/>
+                <HabitCreationButton onClick={()=> {setPopupActive(!isPopupActive); console.log(userId);}}/>
               </HabitHeader >
 
               <HabitBox habitName={'Бросить курить'} 
