@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import ReactDOM from 'react-dom'
 
-import {createUser, createHabbit} from "./APIHelper.js"
+import {createUser, createHabbit, getAllHabit} from "./APIHelper.js"
 
 import HabitBox from './components/HabitBox'
 import HabitCreationForm from './components/HabitCreationForm'
@@ -61,6 +61,9 @@ function App() {
     //Хуки состояния текущих привычек
     const [checkboxStates, setCheckboxStates] = useState([false,true,false,false,false]);
 
+    //Хук с привычками
+    const [habits, setHabits] = useState({});
+
     //Ассистент Sber
     const assistant = initializeAssistant(() => {getStateForAssistant()} );
     
@@ -83,15 +86,68 @@ function App() {
 
 
     //
-    useEffect(() => {}, [])
+    useEffect(()=>{
+      assistant.current=initializeAssistant(() => getStateForAssistant());
+      assistant.current.on("start", (event) => {
+        console.log(`assistant.on(start)`, event);
+        
+      });
+      assistant.current.on(
+        "data",
+        (event /*: any*/) => {
+          if(event.type=="smart_app_data"){
+            console.log("User")
+            console.log(event)
+            if (event.sub != undefined) {
+              console.log("Sub", event.sub)
+              setUserId(event.sub)
+              createUser(event.sub, sberId, userName, userAge, userGender)
+            }else if (event.user_id != undefined) {
+              console.log("UserId", event.user_id)
+              setUserId(event.user_id)
+              createUser(event.userId, sberId, userName, userAge, userGender)
+            }
+          };
+          console.log(`assistant.on(data)`, event);
+          const { action } = event;
+
+          dispatchAssistantAction(action);
+        }
+      );
+
+    },[]);
+    
+    const dispatchAssistantAction = async (action) => {
+      console.log("dispatchAssistantAction", action);
+      if (action) {
+        switch (action.type) {
+          case "something":
+            //something
+            break;
+          default:
+            break;
+        }
+      }
+    };
+    
+    
+    //Заполнение полей с привычкам
+    setHabits( getAllHabit(userId) );
+    console.log(habits);
+
 
     //Обратотчики рользовательской активности
-
     const createHabbitAction = () =>{
       createHabbit(userId, createHabitName, createHabitCount);
       setCreateHabitName('');
       setCreateHabitCount(66);
-    }         
+    };
+    
+    const updateActivity = (HabitId, DateOfActivity, State) =>
+    {
+
+
+    }
       return (
           <React.Fragment>
             
@@ -100,11 +156,11 @@ function App() {
                 <HabitCreationButton onClick={()=> setPopupActive(!isPopupActive)}/>
               </HabitHeader >
 
-              <HabitBox habitName={'Бросить курить'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить курить'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить курить'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить курить'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить курить'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
+              <HabitBox habitName={'Бросить курить'} 
+              progressValue={33} 
+              maxValue={66} 
+              habitProgress = {checkboxStates} 
+              deleteHabit = {()=>{console.log('habit delete')}}/>
             
               {isPopupActive ?
               <div>
