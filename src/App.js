@@ -68,12 +68,27 @@ function App() {
       assistant.current=initializeAssistant(() => getStateForAssistant());
       assistant.current.on("start", (event) => {
         console.log(`assistant.on(start)`, event);
+        
       });
       assistant.current.on(
         "data",
         (event /*: any*/) => {
+          if(event.type=="smart_app_data"){
+            console.log("User")
+            console.log(event)
+            if (event.sub != undefined) {
+              console.log("Sub", event.sub)
+              setUserId(event.sub)
+              createUser(event.sub, sberId, userName, userAge, userGender)
+            }else if (event.user_id != undefined) {
+              console.log("UserId", event.user_id)
+              setUserId(event.user_id)
+              createUser(event.userId, sberId, userName, userAge, userGender)
+            }
+          };
           console.log(`assistant.on(data)`, event);
           const { action } = event;
+
           dispatchAssistantAction(action);
         }
       );

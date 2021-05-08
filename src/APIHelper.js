@@ -3,8 +3,12 @@ import axios from "axios"
 const API_URL = 'http://localhost:3001/'
 
 export async function createUser(UserId, SberId, Name, Age, Gender) {
-    const { data: answer } = await axios.post( API_URL + 'user', {
-        UserId, SberId, Name, Age, Gender
+    const { data: answer } = await axios.post( API_URL + 'user/', {
+        UserId: UserId,
+        SberId: 0,
+        Name: Name,
+        Age: Age,
+        Gender: Gender
     })
     return answer
 }
