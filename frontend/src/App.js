@@ -83,8 +83,6 @@ function App() {
 
 
     //
- 
-      
     useEffect(() => {}, [])
 
     //Обратотчики рользовательской активности
@@ -93,10 +91,7 @@ function App() {
       createHabbit(userId, createHabitName, createHabitCount);
       setCreateHabitName('');
       setCreateHabitCount(66);
-    }
-
-
-            
+    }         
       return (
           <React.Fragment>
             

@@ -10,14 +10,9 @@ export async function createUser(UserId, SberId, Name, Age, Gender) {
 }
 
 export async function createHabbit(UserId, Name, DateForEnd) {
-    const DateOfBegin =  Date();
-    const Completed = false;
-    
-    console.log({
-        UserId, Name, DateOfBegin, DateForEnd, Completed
-    })
+
     const { data: answer } = await axios.post( API_URL + 'habit', {
-        UserId, Name, DateOfBegin, DateForEnd, Completed
+        UserId, Name, DateForEnd
     })
     return answer   
 }

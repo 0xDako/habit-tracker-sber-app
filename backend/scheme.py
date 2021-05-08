@@ -20,3 +20,8 @@ class Habit(BaseModel):
 class Activity(BaseModel):
     HabitId: str
     DateOfActivity: datetime    
+
+class HabitInfo(BaseModel):
+    UserId: str
+    Name: str    
+    DateForEnd: int 

@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from scheme import *
 import pymongo
-from datetime import datetime
 from bson.objectid import ObjectId
 import uvicorn
+import datetime
 
 #############################
 mongo_host = '127.0.0.1'
@@ -50,7 +50,10 @@ async def getUser(UserId: str):
     return result
 
 @app.post("/habit")
-async def createHabbit(habit: Habit):
+async def createHabbit(habitInfo: HabitInfo):
+    habit = dict(habitInfo)
+    habit['Completed'] = False
+    habit['DateOfBegin'] = datetime.datetime.now()
     _id = db.habits.insert_one(dict(habit)).inserted_id
     return str(_id)    
 
