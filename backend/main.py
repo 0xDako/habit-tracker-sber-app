@@ -27,8 +27,11 @@ app.add_middleware(
 
 @app.post("/user")
 async def createUser(user: User):
-    _id = db.users.insert_one(dict(user)).inserted_id
-    return str(_id)
+    if db.users.find_one({"UserId": user.UserId}) == None:
+        _id = db.users.insert_one(dict(user)).inserted_id
+        return str(_id)
+    else:
+        return "0"
 
 @app.delete("/user")
 async def deleteUser(UserId: str): 
@@ -47,7 +50,7 @@ async def getUser(UserId: str):
     return result
 
 @app.post("/habit")
-async def addHabbit(habit: Habit):
+async def createHabbit(habit: Habit):
     _id = db.habits.insert_one(dict(habit)).inserted_id
     return str(_id)    
 
@@ -72,12 +75,11 @@ async def addActivity(activity: Activity):
     return str(_id)
 
 @app.get("/activity")
-async def getAllActivities(activityId: str):
-    result = db.activities.find({"_id": ObjectId(activityId)})
+async def getAllActivities(habitId: str):
+    result = db.activities.find({"HabitId": habitId})
     response = []
     for item in result:
         response.append(str(item["DateOfActivity"].date()))
     return {"DatesOfActivity":response}
 
-
-uvicorn.run(app, host='127.0.0.1', port=3000)
+uvicorn.run(app, host='127.0.0.1', port=3001)
