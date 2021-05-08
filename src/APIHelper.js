@@ -1,5 +1,6 @@
 import axios from "axios"
 
+
 const API_URL = 'http://localhost:3001/'
 
 export async function createUser(UserId, SberId, Name, Age, Gender) {
@@ -14,9 +15,8 @@ export async function createUser(UserId, SberId, Name, Age, Gender) {
 }
 
 export async function createHabbit(UserId, Name, DateForEnd) {
-    const DateOfBegin =  Date();
+    const DateOfBegin = new  Date()
     const Completed = false;
-    
     console.log({
         UserId, Name, DateOfBegin, DateForEnd, Completed
     })
