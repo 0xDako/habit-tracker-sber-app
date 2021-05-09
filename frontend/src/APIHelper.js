@@ -21,7 +21,11 @@ export async function createHabbit(UserId, Name, DateForEnd) {
 }
 
 export async function getAllHabit(UserId) {
-    const { data: answer } = await axios.get( API_URL + 'habit?UserId=' + `${UserId}`,)
+    const { data: answer } = await axios.get( API_URL + 'habit/',{
+        params: {
+            UserId: UserId,
+          },
+    })
     return answer
 }
 

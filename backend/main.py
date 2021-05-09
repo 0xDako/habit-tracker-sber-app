@@ -65,12 +65,12 @@ async def deleteHabit(HabitId: str):
 @app.get("/habit")
 async def findAllHabit(UserId: str):
     result = db.habits.find({"UserId": UserId})
-    response = {}
+    response = []
     for item in result:
         item = dict(item)
         _id = str(item.pop("_id"))
-        response[_id] = item
-    return str(response)
+        response.append(item)
+    return response
 
 @app.put("/activity")
 async def addActivity(activity: Activity):

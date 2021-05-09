@@ -48,9 +48,9 @@ function App() {
     const [isPopupActive, setPopupActive] = useState(false);
       
     //Хуки данных пользователя
-    const [userId, setUserId] = useState("test_userId");
-    const [sberId, setSberId] = useState(123);
-    const [userName, setUserName] = useState(" ̶К̶и̶р̶и̶л̶л̶  Данила");
+    const [userId, setUserId] = useState("1231232131");
+    const [sberId, setSberId] = useState(0);
+    const [userName, setUserName] = useState("Кирилл1");
     const [userAge, setUserAge] = useState(20);
     const [userGender, setUserGender] = useState("М");
 
@@ -66,6 +66,7 @@ function App() {
     const assistant = useRef();
 
     useEffect(()=>{
+      //Инициализация ассистента
       assistant.current=initializeAssistant(() => getStateForAssistant());
       assistant.current.on("start", (event) => {
         console.log(`assistant.on(start)`, event);
@@ -81,8 +82,6 @@ function App() {
               console.log("Sub", event.sub)
               setUserId(event.sub)
               createUser(event.sub, sberId, userName, userAge, userGender)
-              var habits =  getAllHabit(event.sub)
-              console.log(habits)
             }else if (event.user_id != undefined) {
               console.log("UserId", event.user_id)
               setUserId(event.user_id)
@@ -95,16 +94,33 @@ function App() {
           dispatchAssistantAction(action);
         }
       );
-
+      //Получение текущих привычек
+      
     },[]);
+
+    useEffect(()=>{
+      getAllHabit(userId).then((x)=>{setUserHabits(x)});
+    });
 
 
     const dispatchAssistantAction = async (action) => {
       console.log("dispatchAssistantAction", action);
       if (action) {
         switch (action.type) {
-          case "something":
+          case "OpenCreateHabitForm":
+            setPopupActive(!isPopupActive)
             //something
+            break;
+          case "setHabbitName":
+            console.log(action.data)
+            setCreateHabitName(action.data);
+            break;
+          case "setHabbitTime":
+            setCreateHabitCount(action.data)
+            break;
+          case "createHabit":
+            setPopupActive(false)
+            createHabbitAction()
             break;
           default:
             break;
@@ -138,7 +154,7 @@ function App() {
     //Обратотчики рользовательской активности
 
     const createHabbitAction = () =>{
-      createHabbit(userId, createHabitName, createHabitCount);
+      createHabbit(userId, createHabitName, createHabitCount).then(()=>getAllHabit(userId).then((x)=>{setUserHabits(x)}));
       setCreateHabitName('');
       setCreateHabitCount(66);
     }
@@ -150,14 +166,11 @@ function App() {
             
               <HabitHeader >
                 <TextBox size="l" title={`Здравствуйте, ${userName}.`}/>
-                <HabitCreationButton onClick={()=> setPopupActive(!isPopupActive)}/>
+                <HabitCreationButton onClick={()=> {setPopupActive(!isPopupActive); console.log(userId);}}/>
               </HabitHeader >
-
-              <HabitBox habitName={'Бросить университет'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить университет'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить университет'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить университет'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
-              <HabitBox habitName={'Бросить университет'} progressValue={33} maxValue={66} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
+              {userHabits.map(({Name, DateForEnd}, i) => (
+                <HabitBox habitName={Name} progressValue={33} maxValue={DateForEnd} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
+              ))}
             
               {isPopupActive ?
               <div>
