@@ -100,7 +100,7 @@ function App() {
 
     useEffect(()=>{
       getAllHabit(userId).then((x)=>{setUserHabits(x)});
-    });
+    },[userId]);
 
 
     const dispatchAssistantAction = async (action) => {
@@ -146,14 +146,13 @@ function App() {
       }
 
 
-    //
- 
-      
-    useEffect(() => {}, [])
-
+    
     //Обратотчики рользовательской активности
 
     const createHabbitAction = () =>{
+      console.log("UserId", userId);
+      console.log("CreateHabit", createHabitName)
+      console.log("Count", createHabitCount)
       createHabbit(userId, createHabitName, createHabitCount).then(()=>getAllHabit(userId).then((x)=>{setUserHabits(x)}));
       setCreateHabitName('');
       setCreateHabitCount(66);
