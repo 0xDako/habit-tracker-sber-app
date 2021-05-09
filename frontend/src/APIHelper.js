@@ -29,8 +29,8 @@ export async function getAllHabit(UserId) {
     return answer
 }
 
-async function deleteHabbit(HabitId) {
-    const { data: answer } = await axios.delete( process.env.API_URL + 'habit?HabitId=' + `${HabitId}`,)
+export async function deleteHabbit(HabitId) {
+    const { data: answer } = await axios.delete( API_URL + 'habit?HabitId=' + `${HabitId}`,)
     return answer
 }
 

@@ -42,7 +42,7 @@ const HabitCard = styled(Card)`
   }
 `
 
-const HabitBox = ({habitName, progressValue, maxValue, deleteHabit, habitProgress, ChangeActivity}) =>  {
+const HabitBox = ({habitId, habitName, progressValue, maxValue, deleteHabit, habitProgress, updateActivity}) =>  {
 
   const subTitle = `${progressValue}/${maxValue}` ;
   
@@ -79,13 +79,13 @@ const HabitBox = ({habitName, progressValue, maxValue, deleteHabit, habitProgres
               {days.map(m =>  <Col type="calc" size={1} key={m[0]} >
                 <DateTextBox size="m" title={m[1]} subTitle={m[2]} />
                 <CheckboxContainer>
-                  <Checkbox checked={habitProgress[m[0]]} onChange = {() =>ChangeActivity(m[0])}/>
+                  <Checkbox checked={habitProgress[m[0]]} onChange = {() =>updateActivity(m[0])}/>
                 </CheckboxContainer>
               </Col>)}
               
             </HabitBoxRow>
           </Container>
-          <IconTrashContainer onClick={deleteHabit}><IconTrash /></IconTrashContainer>
+          <IconTrashContainer onClick={() => {deleteHabit(habitId)}}><IconTrash /></IconTrashContainer>
         </HabitCardContainer>
       </CardBody>
     </HabitCard>

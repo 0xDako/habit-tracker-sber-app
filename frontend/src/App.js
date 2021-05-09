@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import ReactDOM from 'react-dom'
 
-import {createUser, createHabbit, getAllHabit} from "./APIHelper.js"
+import {createUser, createHabbit, getAllHabit, deleteHabbit} from "./APIHelper.js"
 
 import HabitBox from './components/HabitBox'
 import HabitCreationForm from './components/HabitCreationForm'
@@ -158,7 +158,9 @@ function App() {
       setCreateHabitCount(66);
     }
 
-
+    const deleteHabitAction = (habitId) =>{
+      deleteHabbit(habitId).then(() => getAllHabit(userId).then((x)=>{setUserHabits(x)}))
+    }
             
       return (
           <React.Fragment>
@@ -167,8 +169,8 @@ function App() {
                 <TextBox size="l" title={`Здравствуйте, ${userName}.`}/>
                 <HabitCreationButton onClick={()=> {setPopupActive(!isPopupActive); console.log(userId);}}/>
               </HabitHeader >
-              {userHabits.map(({Name, DateForEnd}, i) => (
-                <HabitBox habitName={Name} progressValue={33} maxValue={DateForEnd} habitProgress = {checkboxStates} deleteHabit = {()=>{console.log('habit delete')}}/>
+              {userHabits.map(({_id, Name, DateForEnd}, i) => (
+                <HabitBox habitId={_id} habitName={Name} progressValue={33} maxValue={DateForEnd} habitProgress = {checkboxStates} deleteHabit = {deleteHabitAction}/>
               ))}
             
               {isPopupActive ?
