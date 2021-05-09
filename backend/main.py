@@ -69,6 +69,7 @@ async def findAllHabit(UserId: str):
     for item in result:
         item = dict(item)
         _id = str(item.pop("_id"))
+        item["_id"]=_id
         response.append(item)
     return response
 
