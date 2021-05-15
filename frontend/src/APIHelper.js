@@ -36,9 +36,9 @@ export async function deleteHabbit(HabitId) {
 
 
 
-async function addActivity(UserId, Date) {
-    const { data: answer } = await axios.post( process.env.API_URL + 'activity', {
-        UserId, Date
+export async function addActivity(HabitId, Date) {
+    const { data: answer } = await axios.post( API_URL + 'activity', {
+        HabitId, Date
     })
     return answer
 }

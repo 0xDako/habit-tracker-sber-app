@@ -57,8 +57,9 @@ const HabitBox = ({habitId, habitName, progressValue, maxValue, deleteHabit, hab
   for(let i = 0; i < 5; ++i) {
     let day = dateParse(now.getDate());
     let month = dateParse(now.getMonth());
+    let year = now.getFullYear()
 
-    let date = day +'.'+ month;
+    let date = day +'-'+ month + '-' + year;
 
     days.push([i, date, weekDay[now.getDay()]]);
     now = new Date(now.getTime() - 1000 * 60 * 60 * 24);
@@ -77,9 +78,9 @@ const HabitBox = ({habitId, habitName, progressValue, maxValue, deleteHabit, hab
               </Col>
              
               {days.map(m =>  <Col type="calc" size={1} key={m[0]} >
-                <DateTextBox size="m" title={m[1]} subTitle={m[2]} />
+                <DateTextBox size="m" title={m[1].slice(0,5)} subTitle={m[2]} />
                 <CheckboxContainer>
-                  <Checkbox checked={habitProgress[m[0]]} onChange = {() =>updateActivity(m[0])}/>
+                  <Checkbox checked={habitProgress[m[0]]} onChange = {(x) =>updateActivity(habitId, m[1], x)}/>
                 </CheckboxContainer>
               </Col>)}
               
