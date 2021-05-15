@@ -169,6 +169,7 @@ function App() {
       console.log("Count", createHabitCount)
       createHabbit(userId.current, createHabitName.current, createHabitCount.current).then(()=>getAllHabit(userId.current).then((x)=>{setUserHabits(x)}));
       createHabitName.current = '';
+      setCreateHabitNameState("");
       setCreateHabitCountState(66);
     }
 
