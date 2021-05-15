@@ -161,6 +161,12 @@ function App() {
     const deleteHabitAction = (habitId) =>{
       deleteHabbit(habitId).then(() => getAllHabit(userId).then((x)=>{setUserHabits(x)}))
     }
+
+    const updateActivityActiom = (habitId, date, state) => 
+    {
+
+
+    }
             
       return (
           <React.Fragment>
@@ -170,7 +176,13 @@ function App() {
                 <HabitCreationButton onClick={()=> {setPopupActive(!isPopupActive); console.log(userId);}}/>
               </HabitHeader >
               {userHabits.map(({_id, Name, DateForEnd}, i) => (
-                <HabitBox habitId={_id} habitName={Name} progressValue={33} maxValue={DateForEnd} habitProgress = {checkboxStates} deleteHabit = {deleteHabitAction}/>
+                <HabitBox habitId={_id} 
+                habitName={Name} 
+                progressValue={33} 
+                maxValue={DateForEnd} 
+                habitProgress = {checkboxStates} 
+                deleteHabit = {deleteHabitAction}
+                updateActivity = {updateActivityActiom}/>
               ))}
             
               {isPopupActive ?
