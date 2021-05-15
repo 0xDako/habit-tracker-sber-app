@@ -48,15 +48,18 @@ function App() {
     const [isPopupActive, setPopupActive] = useState(false);
       
     //Хуки данных пользователя
-    const [userId, setUserId] = useState("1231232131");
+    const userId =useRef("1234555");
     const [sberId, setSberId] = useState(0);
     const [userName, setUserName] = useState("Кирилл1");
     const [userAge, setUserAge] = useState(20);
     const [userGender, setUserGender] = useState("М");
 
     //Хуки создания новой привычки
-    const[createHabitName, setCreateHabitName] = useState("");
-    const[createHabitCount, setCreateHabitCount] = useState(66);
+    const createHabitName = useRef('');
+    const createHabitCount = useRef('');
+    const[createHabitNameState, setCreateHabitNameState] = useState("");
+    const[createHabitCountState, setCreateHabitCountState] = useState(66);
+    
     const[userHabits, setUserHabits]= useState([])
 
     //Хуки состояния текущих привычек
@@ -80,12 +83,14 @@ function App() {
             console.log(event)
             if (event.sub != undefined) {
               console.log("Sub", event.sub)
-              setUserId(event.sub)
+              userId.current = event.sub
               createUser(event.sub, sberId, userName, userAge, userGender)
+              getAllHabit(event.sub).then((x)=>{setUserHabits(x)});
             }else if (event.user_id != undefined) {
               console.log("UserId", event.user_id)
-              setUserId(event.user_id)
+              userId.current = event.user_id
               createUser(event.userId, sberId, userName, userAge, userGender)
+              getAllHabit(event.user_id).then((x)=>{setUserHabits(x)});
             }
           };
           console.log(`assistant.on(data)`, event);
@@ -99,8 +104,17 @@ function App() {
     },[]);
 
     useEffect(()=>{
-      getAllHabit(userId).then((x)=>{setUserHabits(x)});
-    },[userId]);
+      getAllHabit(userId.current).then((x)=>{setUserHabits(x)});
+    },[userId.current]);
+
+    useEffect(()=>{
+      createHabitName.current = createHabitNameState
+    },[createHabitNameState]);
+
+    useEffect(()=>{
+      createHabitCount.current=createHabitCountState
+    },[createHabitCountState])
+
 
 
     const dispatchAssistantAction = async (action) => {
@@ -113,10 +127,10 @@ function App() {
             break;
           case "setHabbitName":
             console.log(action.data)
-            setCreateHabitName(action.data);
+            setCreateHabitNameState(action.data)
             break;
           case "setHabbitTime":
-            setCreateHabitCount(action.data)
+            setCreateHabitCountState(action.data)
             break;
           case "createHabit":
             setPopupActive(false)
@@ -150,12 +164,12 @@ function App() {
     //Обратотчики рользовательской активности
 
     const createHabbitAction = () =>{
-      console.log("UserId", userId);
-      console.log("CreateHabit", createHabitName)
+      console.log("UserId", userId.current);
+      console.log("CreateHabit", createHabitName.current)
       console.log("Count", createHabitCount)
-      createHabbit(userId, createHabitName, createHabitCount).then(()=>getAllHabit(userId).then((x)=>{setUserHabits(x)}));
-      setCreateHabitName('');
-      setCreateHabitCount(66);
+      createHabbit(userId.current, createHabitName.current, createHabitCount.current).then(()=>getAllHabit(userId.current).then((x)=>{setUserHabits(x)}));
+      createHabitName.current = '';
+      setCreateHabitCountState(66);
     }
 
     const deleteHabitAction = (habitId) =>{
@@ -173,7 +187,7 @@ function App() {
             
               <HabitHeader >
                 <TextBox size="l" title={`Здравствуйте, ${userName}.`}/>
-                <HabitCreationButton onClick={()=> {setPopupActive(!isPopupActive); console.log(userId);}}/>
+                <HabitCreationButton onClick={()=> {setPopupActive(!isPopupActive); console.log(userId.current);}}/>
               </HabitHeader >
               {userHabits.map(({_id, Name, DateForEnd}, i) => (
                 <HabitBox habitId={_id} 
@@ -189,11 +203,12 @@ function App() {
               <div>
                   <PopupBackdrop onClick={()=> setPopupActive(!isPopupActive)}/>
                   <HabitCreationForm setPopupActive = {setPopupActive}
-                  setCreateHabitName={setCreateHabitName}
-                  setCreateHabitCount={setCreateHabitCount}
-                  createHabbitAction ={createHabbitAction}
-                  createHabitCount = {createHabitCount}
+                  setCreateHabitCountState={setCreateHabitCountState}
+                  createHabitNameState={createHabitNameState}
+                   setCreateHabitNameState={setCreateHabitNameState}
+                  createHabitCountState = {createHabitCountState}
                   createHabitName = {createHabitName}
+                  createHabbitAction={createHabbitAction}
 
                   />
                   <CloseButton onClick={()=> setPopupActive(!isPopupActive)}><IconClose/></CloseButton>

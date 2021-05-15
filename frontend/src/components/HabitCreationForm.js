@@ -40,7 +40,10 @@ const StepperLabel = styled(TextBox )`
 
 `
 
-const HabitCreationForm = ({setPopupActive, setCreateHabitName, setCreateHabitCount, createHabbitAction, createHabitCount, createHabitName}) =>  {
+const HabitCreationForm = ({
+  setPopupActive,  createHabitCountState,   createHabitNameState, setCreateHabitNameState, setCreateHabitCountState,
+                  createHabitName, createHabbitAction
+}) =>  {
   return (
       <HabitCard>
         <CardBody >
@@ -50,15 +53,15 @@ const HabitCreationForm = ({setPopupActive, setCreateHabitName, setCreateHabitCo
           <HabitCreationFormWrapper>
           <CreationFormField
             label='Название привычки'
-            value={createHabitName}
-            onChange = {(text)=>{setCreateHabitName(text.target.value)}}
+            value={createHabitNameState}
+            onChange = {(text)=>{setCreateHabitNameState(text.target.value)}}
           />   
           <div>
             <StepperLabel size="m" subTitle='Время выработки'/>
             <Stepper 
               step={1}
-              value={createHabitCount}
-              onChange = {(count) => {setCreateHabitCount(count)}}
+              value={createHabitCountState}
+              onChange = {(count) => {setCreateHabitCountState(count)}}
             />
           </div>
           
