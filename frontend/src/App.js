@@ -173,7 +173,7 @@ function App() {
     }
 
     const deleteHabitAction = (habitId) =>{
-      deleteHabbit(habitId).then(() => getAllHabit(userId).then((x)=>{setUserHabits(x)}))
+      deleteHabbit(habitId).then(() => getAllHabit(userId.current).then((x)=>{setUserHabits(x)}))
     }
             
       return (
