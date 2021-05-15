@@ -24,7 +24,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.post("/user")
 async def createUser(user: User):
     if db.users.find_one({"UserId": user.UserId}) == None:

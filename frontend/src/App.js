@@ -48,7 +48,7 @@ function App() {
     const [isPopupActive, setPopupActive] = useState(false);
       
     //Хуки данных пользователя
-    const userId =useRef("1234555");
+    const userId = useRef("1234555");
     const [sberId, setSberId] = useState(0);
     const [userName, setUserName] = useState("Кирилл1");
     const [userAge, setUserAge] = useState(20);
@@ -98,9 +98,7 @@ function App() {
 
           dispatchAssistantAction(action);
         }
-      );
-      //Получение текущих привычек
-      
+      );      
     },[]);
 
     useEffect(()=>{
@@ -123,7 +121,6 @@ function App() {
         switch (action.type) {
           case "OpenCreateHabitForm":
             setPopupActive(!isPopupActive)
-            //something
             break;
           case "setHabbitName":
             console.log(action.data)
@@ -162,7 +159,6 @@ function App() {
 
     
     //Обратотчики рользовательской активности
-
     const createHabbitAction = () =>{
       console.log("UserId", userId.current);
       console.log("CreateHabit", createHabitName.current)
@@ -177,9 +173,8 @@ function App() {
       deleteHabbit(habitId).then(() => getAllHabit(userId.current).then((x)=>{setUserHabits(x)}))
     }
 
-    const updateActivityActiom = (habitId, date, state) => 
+    const updateActivityAction = (habitId, date, state) => 
     {
-
 
     }
             
@@ -197,7 +192,7 @@ function App() {
                 maxValue={DateForEnd} 
                 habitProgress = {checkboxStates} 
                 deleteHabit = {deleteHabitAction}
-                updateActivity = {updateActivityActiom}/>
+                updateActivity = {updateActivityAction}/>
               ))}
             
               {isPopupActive ?
@@ -217,8 +212,6 @@ function App() {
           : null}
           </React.Fragment>
       );
-    
-    
 }
 
 export default App
