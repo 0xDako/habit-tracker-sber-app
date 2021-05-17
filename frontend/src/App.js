@@ -56,6 +56,9 @@ function App() {
   const [createHabitNameState, setCreateHabitNameState] = useState("");
   const [createHabitCountState, setCreateHabitCountState] = useState(66);
 
+  const HabitIdToComplete = useRef("");
+  
+
   const [userHabits, setUserHabits] = useState([]);
 
   //Хуки состояния текущих привычек
@@ -138,6 +141,20 @@ function App() {
           }
         case "deleteHabit":
           deleteHabit(action.data)
+          break;
+        case "completeHabitDate":
+          const year = action.data.year
+          const month = action.data.month
+          const day = action.data.day
+          updateActivityAction(HabitIdToComplete.current, year + "-" + month + "-" + day + "T19:47:00.571Z", true)
+          break;
+        case "completeHabit":
+          userHabits.map(({ _id, Name}, i) => {
+            if(Name.toLowerCase() == action.data.toLowerCase()){
+              HabitIdToComplete.current=_id
+              return
+            }
+          });
           break;
         default:
           break;
