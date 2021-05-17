@@ -56,8 +56,6 @@ function App() {
   const [createHabitNameState, setCreateHabitNameState] = useState("");
   const [createHabitCountState, setCreateHabitCountState] = useState(66);
 
-  const HabitIdToComplete = useRef("");
-  
 
   const [userHabits, setUserHabits] = useState([]);
 
@@ -142,19 +140,24 @@ function App() {
         case "deleteHabit":
           deleteHabit(action.data)
           break;
-        case "completeHabitDate":
-          const year = action.data.year
-          const month = action.data.month
-          const day = action.data.day
-          updateActivityAction(HabitIdToComplete.current, year + "-" + month + "-" + day + "T19:47:00.571Z", true)
-          break;
         case "completeHabit":
+          const year = action.date.year
+          const month = action.date.month
+          const day = action.date.day
+          let HabitId="";
+          console.log(action.data)
           userHabits.map(({ _id, Name}, i) => {
             if(Name.toLowerCase() == action.data.toLowerCase()){
-              HabitIdToComplete.current=_id
-              return
+              HabitId=_id
+              console.log("HabitId")
             }
           });
+          if (HabitId == ""){
+            return
+          }
+          else{
+            updateActivityAction(HabitId, year + "-" + month + "-" + day + "T19:47:00.571Z", true)
+          }
           break;
         default:
           break;
