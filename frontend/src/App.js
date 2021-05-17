@@ -136,12 +136,23 @@ function App() {
             setPopupActive(false);
             createHabbitAction();
           }
+        case "deleteHabit":
+          deleteHabit(action.data)
           break;
         default:
           break;
       }
     }
   };
+
+  const deleteHabit =(HabitName)=>{
+    userHabits.map(({ _id, Name}, i) => {
+      if(HabitName.toLowerCase() == Name.toLowerCase()){
+        deleteHabitAction(_id);
+        return
+      }
+    });
+  }
 
   const getStateForAssistant = () => {
     console.log("getStateForAssistant: state:", state);
@@ -157,6 +168,8 @@ function App() {
     console.log("getStateForAssistant: new_state:", new_state);
     return new_state;
   };
+
+
 
   //Обратотчики рользовательской активности
   const createHabbitAction = () => {
