@@ -254,7 +254,7 @@ function App() {
           habitName={Name}
           progressValue={progress}
           maxValue={DateForEnd}
-          habitProgress={fivedays}
+          habitProgress={fivedays ? fivedays[i]: 0}
           deleteHabit={deleteHabitAction}
           updateActivity={updateActivityAction}
         />

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3001/";
+const API_URL = "https://thawing-earth-86187.herokuapp.com/";
 
 export async function createUser(UserId, SberId, Name, Age, Gender) {
   const { data: answer } = await axios.post(API_URL + "user/", {
