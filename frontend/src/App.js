@@ -169,8 +169,14 @@ function App() {
     userHabits.map(({ _id, Name}, i) => {
       if(HabitName.toLowerCase() == Name.toLowerCase()){
         deleteHabitAction(_id);
+        assistant.current.sendData({
+          action: { action_id: "successDelete" },
+        });
         return
       }
+    });
+    assistant.current.sendData({
+      action: { action_id: "BadDelete" },
     });
   }
 
@@ -205,6 +211,9 @@ function App() {
       getAllHabit(userId.current).then((x) => {
         console.log(x);
         setUserHabits(x);
+        assistant.current.sendData({
+          action: { action_id: "successAdd" },
+        });
       })
     );
     createHabitName.current = "";
@@ -254,7 +263,7 @@ function App() {
           habitName={Name}
           progressValue={progress}
           maxValue={DateForEnd}
-          habitProgress={fivedays ? fivedays[i]: 0}
+          habitProgress={fivedays}
           deleteHabit={deleteHabitAction}
           updateActivity={updateActivityAction}
         />
