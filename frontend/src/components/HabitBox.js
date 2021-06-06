@@ -92,7 +92,7 @@ const HabitBox = ({
                   />
                   <CheckboxContainer>
                     <Checkbox
-                      checked={habitProgress[m[0]]}
+                      checked={habitProgress!=undefined ? habitProgress[m[0]] : 1}
                       onChange={(target) =>
                         updateActivity(habitId, m[1], target.target.checked)
                       }

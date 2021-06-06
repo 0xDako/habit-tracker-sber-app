@@ -1,6 +1,10 @@
 import axios from "axios";
 
+<<<<<<< HEAD
 const API_URL = "https://desolate-badlands-87176.herokuapp.com/";
+=======
+const API_URL = "https://thawing-earth-86187.herokuapp.com/";
+>>>>>>> 512682f1480989bb0cf87d8623cee3841874c65d
 
 export async function createUser(UserId, SberId, Name, Age, Gender) {
   const { data: answer } = await axios.post(API_URL + "user/", {
