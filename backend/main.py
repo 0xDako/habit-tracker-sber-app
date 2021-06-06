@@ -12,7 +12,7 @@ mongo_host = '127.0.0.1'
 mongo_port = 27017
 #############################
 
-client = pymongo.MongoClient(host=mongo_host, port=mongo_port)
+client = pymongo.MongoClient("mongodb+srv://dbMike:mHHGLIVNXfLQwX8l@cluster0.1il65.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client.HabbitsDB
 
 app = FastAPI()
@@ -98,6 +98,8 @@ async def findAllHabit(UserId: str):
 
 @app.post("/activity")
 async def addActivity(activity: Activity):
+    if(activity.DateOfActivity > datetime.datetime.now(datetime.timezone.utc)):
+        activity.DateOfActivity -= datetime.timedelta(days=7)
     _id = db.activities.insert_one(dict(activity)).inserted_id
     return str(_id)
 
@@ -117,4 +119,4 @@ async def getAllActivities(habitId: str):
         response.append(str(item["DateOfActivity"].date()))
     return {"DatesOfActivity": response}
 
-uvicorn.run(app, host='127.0.0.1', port=3001)
+#uvicorn.run(app, host='127.0.0.1', port=3001)
